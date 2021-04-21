@@ -28,7 +28,7 @@ Les bâtiments sont découpés en **zones** `data/zones.json` pouvant avoir des 
 - `nom` (str) : le nom de la zone
 - `surface` (float) : la surface de la zone
 - `usage` (int) : identifiant de l'usage de la zone défini dans le fichier de données `data/usages.json`
-- `constructionElements` (List[Dict[int, float]]) : liste des éléments de construction contenant leur identifiant unique ainsi que leur quantité (dont l'unité est définie dans le produit de construction).
+- `constructionElements` (List[Dict[int, float]]) : liste des éléments de construction contenant leur identifiant unique ainsi que leur quantité (dont l'unité est définie dans le produit de construction). Cette liste se présente sous la forme `[{id: 0, quantite: 12.34}, ...]` et la quantité est par la suite utilisée pour calculer les impacts de chaque élément de construction d'une zone.
 
 Les **produits de construction** `data/construction_elements.json` contiennent les impacts carbone unitaires pour chaque phase de la vie du produit. Les phases considérées sont :
 
@@ -42,7 +42,7 @@ Les champs du produit de construction sont les suivants :
 - `id` (int) : un index unique identifiant le produit
 - `nom` (str) : le nom du produit
 - `unite` (str) : l'unité de mesure du produit de construction
-- `impactUnitaireRechauffementClimatique` (Dict[str, float]) : impact carbone unitaire en kg éq. CO₂/unité du produit de construction pour chaque phase du cycle de vie du produit.
+- `impactUnitaireRechauffementClimatique` (Dict[str, float]) : impact carbone unitaire en kg éq. CO₂/unité du produit de construction pour chaque phase du cycle de vie du produit. Cet objet se présente sous la forme `{production: 1.2, construction: 3.4, exploitation: 5.6, finDeVie: 7.8}` et les impacts unitaires sont par la suite multipliés par les quantités des produits présents dans les zones pour évaluer l'impact carbone.
 - `dureeVieTypique` (int) : la durée de vie du produit considérée dans l'analyse en années
 
 
@@ -68,7 +68,7 @@ Le langage de programmation choisi peut être du python ou du javascript/typescr
 
 ### Niveau 2 : calcul de l'impact carbone d'un bâtiment
 
-Implémenter une fonction calculant l'impact sur le réchauffement climatique d'un **bâtiment** {i} sur **tout son cycle de vie** à partir des instructions de calculs suivantes.
+Implémenter une fonction d'API calculant l'impact sur le réchauffement climatique d'un **bâtiment** {i} sur **tout son cycle de vie** à partir des instructions de calculs suivantes (il n'est pas nécessaire de faire des fonction d'API pour les calculs intermédiaires).
 
 #### Calcul d'impact d'un produit de construction
 
