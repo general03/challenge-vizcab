@@ -21,7 +21,6 @@ Un **bâtiment** `data/batiments.json` est défini par les caractéristiques sui
 - `usage` (int) : identifiant de l'usage du bâtiment défini dans le fichier de données `data/usages.json`
 - `periodeDeReference` (int) : la période en années sur laquelle l'analyse de cycle de vie est effectuée
 
-
 Les bâtiments sont découpés en **zones** `data/zones.json` pouvant avoir des usages différents. Les caractéristiques des zones sont les suivantes :
 
 - `id` (int) : un index unique identifiant la zone
@@ -45,7 +44,6 @@ Les champs du produit de construction sont les suivants :
 - `impactUnitaireRechauffementClimatique` (Dict[str, float]) : impact carbone unitaire en kg éq. CO₂/unité du produit de construction pour chaque phase du cycle de vie du produit. Cet objet se présente sous la forme `{production: 1.2, construction: 3.4, exploitation: 5.6, finDeVie: 7.8}` et les impacts unitaires sont par la suite multipliés par les quantités des produits présents dans les zones pour évaluer l'impact carbone.
 - `dureeVieTypique` (int) : la durée de vie du produit considérée dans l'analyse en années
 
-
 ## Comment démarrer
 
 Cloner le dépot afin de récupérer les données du projet :
@@ -63,51 +61,55 @@ Le langage de programmation choisi peut être du python ou du javascript/typescr
 
 ### Niveau 1 : calcul de la surface et de l'usage des bâtiments
 
-1. Créer une fonction d'API qui calcule la surface d'un bâtiment donné {i} qui est la somme des surfaces des zones le composant.
-2. Créer la fonction calculant l'usage d'un bâtiment donné {i} et retournant le label de l'usage corespondant. Dans le cas d'un bâtiment contenant des zones d'usage différent, l'usage d'un bâtiment est l'usage représentant la plus grande surface dans ce bâtiment. 
+1. Créer une fonction d'API qui calcule la surface d'un bâtiment donné $`i`$ qui est la somme des surfaces des zones le composant.
+2. Créer la fonction calculant l'usage d'un bâtiment donné $`i`$ et retournant le label de l'usage corespondant. Dans le cas d'un bâtiment contenant des zones d'usage différent, l'usage d'un bâtiment est l'usage représentant la plus grande surface dans ce bâtiment.
 
 ### Niveau 2 : calcul de l'impact carbone d'un bâtiment
 
-Implémenter une fonction d'API calculant l'impact sur le réchauffement climatique d'un **bâtiment** {i} sur **tout son cycle de vie** à partir des instructions de calculs suivantes (il n'est pas nécessaire de faire des fonction d'API pour les calculs intermédiaires).
+Implémenter une fonction d'API calculant l'impact sur le réchauffement climatique d'un **bâtiment** $`i`$ sur **tout son cycle de vie** à partir des instructions de calculs suivantes (il n'est pas nécessaire de faire des fonction d'API pour les calculs intermédiaires).
 
 #### Calcul d'impact d'un produit de construction
 
-L'impact carbone
-<a href="https://render.githubusercontent.com/render/math?math=I" target="_blank"><img src="https://render.githubusercontent.com/render/math?math=I" title="I"/></a>
- d'un produit de construction pour une phase de cycle de vie donnée est calculé à partir des impacts unitaires
-<a href="https://render.githubusercontent.com/render/math?math=I_U" target="_blank"><img src="https://render.githubusercontent.com/render/math?math=I_U" title="I_U"/></a>
-des produits de construction et de la quantité
-<a href="https://render.githubusercontent.com/render/math?math=Q_j" target="_blank"><img src="https://render.githubusercontent.com/render/math?math=Q_j" title="Q_j"/></a>
-présente dans la zone {j}.
+L'impact carbone $`I`$ d'un produit de construction pour une phase de cycle de vie donnée est calculé à partir des impacts unitaires
+$`I_u`$ des produits de construction et de la quantité $`Q_j`$ présente dans la zone {j}.
 
 ##### Production
 
-L'impact carbone d'un produit de construction de la zone {j} pour la phase de production :
+L'impact carbone d'un produit de construction de la zone $`j`$ pour la phase de production :
 
-<a href="https://render.githubusercontent.com/render/math?math=I_{production\,j} = I_{Uproduction} \times Q_{j}" target="_blank"><img src="https://render.githubusercontent.com/render/math?math=I_{production\,j} = I_{Uproduction} \times Q_{j}" title="I_{production\,j} = I_{Uproduction} \times Q_{j}"/></a>
+```math
+I_{production,j} = I_{Uproduction} \times Q_j
+```
 
 ##### Construction
 
-L'impact carbone d'un produit de construction de la zone {j} pour la phase de construction :
+L'impact carbone d'un produit de construction de la zone $`j`$ pour la phase de construction :
 
-<a href="https://render.githubusercontent.com/render/math?math=I_{construction\,j} = I_{Uconstruction} \times Q_{j}" target="_blank"><img src="https://render.githubusercontent.com/render/math?math=I_{construction\,j} = I_{Uconstruction} \times Q_{j}" title="I_{construction\,j} = I_{Uconstruction} \times Q_{j}"/></a>
+```math
+I_{construction,j} = I_{Uconstruction} \times Q_j
+```
 
 ##### Exploitation
 
-L'impact carbone d'un produit de construction de la zone {j} pour la phase d'exploitation :
+L'impact carbone d'un produit de construction de la zone $`j`$ pour la phase d'exploitation :
 
-<a href="https://render.githubusercontent.com/render/math?math=I_{exploitation\,j} = \left(R_p \times I_{Uexploitation} %2B (R_p - 1) \times (I_{Uproduction} %2B I_{Uconstruction} %2B I_{Ufindevie})\right) \times Q_{j}" target="_blank"><img src="https://render.githubusercontent.com/render/math?math=I_{exploitation\,j} = \left(R_p \times I_{Uexploitation} %2B (R_p - 1) \times (I_{Uproduction} %2B I_{Uconstruction} %2B I_{Ufindevie})\right) \times Q_{j}" title="I_{exploitation\,j} = \left(R_p \times I_{Uexploitation} %2B (R_p - 1) \times (I_{Uproduction} %2B I_{Uconstruction} %2B I_{Ufindevie})\right) \times Q_{j}"/></a>
+```math
+I_{exploitation,j} = (R_p \times I_{Uexploitation} + (R_p - 1) \times (I_{Uproduction} + I_{Uconstruction} + I_{Ufindevie})) \times Q_j
+```
 
-avec
-<a href="https://render.githubusercontent.com/render/math?math=R_p"  target="_blank"><img src="https://render.githubusercontent.com/render/math?math=R_p" title="R_p"/></a>
-le facteur de renouvellement dépendant du produit de construction {p} et du bâtiment {i} par :
-<a href="https://render.githubusercontent.com/render/math?math=R_p%20\doteq%20R_{p\,i}%20=%20\text{Max}\left(1,%20\frac{\text{periodeDeReference}_i}{\text{dureeVieTypique}_p}\right)"  target="_blank"><img src="https://render.githubusercontent.com/render/math?math=R_p%20\doteq%20R_{p\,i}%20=%20\text{Max}\left(1,%20\frac{\text{periodeDeReference}_i}{\text{dureeVieTypique}_p}\right)" title="=R_p%20\doteq%20R_{p\,i}%20=%20\text{Max}\left(1,%20\frac{\text{periodeDeReference}_i}{\text{dureeVieTypique}_p}\right)"/></a>
+avec $`R_p`$ le facteur de renouvellement dépendant du produit de construction {p} et du bâtiment $`i`$ par :
+
+```math
+R_p \doteq R_{p,i} = \max(1, \frac{periodeDeReference_i}{dureeVieTypique_p})
+```
 
 ##### Fin de vie
 
 L'impact carbone d'un produit de construction de la zone {j} pour la phase de fin de vie :
 
-<a href="https://render.githubusercontent.com/render/math?math=I_{findevie\,j} = I_{Ufindevie} \times Q_{j}" target="_blank"><img src="https://render.githubusercontent.com/render/math?math=I_{findevie\,j} = I_{Ufindevie} \times Q_{j}" title="I_{findevie\,j} = I_{Ufindevie} \times Q_{j}"/></a>
+```math
+I_{findevie,j} = I_{Ufindevie} \times Q_j
+```
 
 ##### Total cycle de vie
 
