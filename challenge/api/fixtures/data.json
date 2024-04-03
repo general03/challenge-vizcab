@@ -1,0 +1,73 @@
+[
+    {
+        "pk": 1,
+        "model": "api.Batiment",
+        "fields": {
+            "name": "Résidence Les Orties",
+            "surface": null,
+            "usage": null,
+            "periode_de_reference": 50
+        }
+    },
+    {
+        "pk": 2,
+        "model": "api.Batiment",
+        "fields": {
+            "name": "Siège social Entreprise D",
+            "surface": null,
+            "usage": null,
+            "periode_de_reference": 30
+        }
+    },
+    {
+        "pk": 3,
+        "model": "api.Batiment",
+        "fields": {
+            "name": "Centre sportif",
+            "surface": null,
+            "usage": null,
+            "periode_de_reference": 50
+        }
+    },
+
+
+
+
+    {
+        "pk": 1,
+        "model": "api.Zone",
+        "fields": {
+            "name": "Les Orties - Escalier A",
+            "surface": 411,
+            "usage": 1,
+            "bat_id": 1
+        }
+    }, {
+        "pk": 2,
+        "model": "api.Zone",
+        "fields": {
+            "name": "Les Orties - Escalier B",
+            "surface": 189,
+            "usage": 1,
+            "bat_id": 1
+        }
+    }, {
+        "pk": 3,
+        "model": "api.Zone",
+        "fields": {
+            "name": "Les Orties - Crêche",
+            "surface": 170,
+            "usage": 4,
+            "bat_id": 1
+        }
+    }, {
+        "pk": 4,
+        "model": "api.Zone",
+        "fields": {
+            "name": "Restaurant Du Pain Aux Orties",
+            "surface": 215,
+            "usage": 5,
+            "bat_id": 1
+        }
+    }
+]

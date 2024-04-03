@@ -1,3 +1,20 @@
+# Result
+
+## Usage
+
+- Clone the repo and in terminal go to root folder
+- Launch `make install`
+- Launch server with `make dev`
+- Check the only root with `make curl`
+
+## Use case
+
+I do not do all the case, it was a long challenge...
+
+It would be better to talk each other about the things I wanted to do
+
+
+
 # Exercice Vizcab : estimation de l'impact carbone d'un projet
 
 ## Contexte
